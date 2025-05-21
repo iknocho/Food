@@ -1,0 +1,12 @@
+fastapi[standard]
+sqlalchemy
+sqlmodel
+pydantic_settings
+pydantic
+asyncpg
+greenlet
+sqladmin
+openpyxl
+pandas
+pytest
+pytest-asyncio

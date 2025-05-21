@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:17
+    container_name: food_postgres_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: food
+    ports:
+      - "5432:5432"
+    volumes:
+      - food:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d food"] # 데이터베이스 사용자 이름을 admin으로 가정합니다.
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer
+    container_name: food_adminer
+    ports:
+      - "8080:8080"
+    restart: always
+
+  web:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  food:
